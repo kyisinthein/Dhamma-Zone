@@ -16,7 +16,7 @@ export default function HomePage() {
       end={{ x: 0, y: 1 }}
     >
       <ScrollView contentContainerStyle={styles.content}>
-        <ThemedText style={styles.slogan}>'ဗုဒ္ဓသာသနံ စိရံ တိဋ္ဌတု'</ThemedText>
+        <ThemedText style={styles.slogan}>{'ဗုဒ္ဓသာသနံ စိရံ တိဋ္ဌတု'}</ThemedText>
         <Image
           source={{ uri: 'https://sys-shop.s3.ap-southeast-1.amazonaws.com/0main/DhammaZone/home.webp' }}
           style={styles.hero}
@@ -24,7 +24,7 @@ export default function HomePage() {
         />
         <ThemedText type="title" style={styles.title}>သုတ္တန်ပိဋကတ်နှင့် အနက်အဓိပ္ပာယ်များ</ThemedText>
         <View style={styles.tilesRow}>
-          <View style={styles.tile}>
+          <TouchableOpacity style={styles.tile} onPress={() => router.push('/pali')}>
             <View style={styles.tileImageWrap}>
               <Image
                 source={{ uri: 'https://sys-shop.s3.ap-southeast-1.amazonaws.com/0main/DhammaZone/dhamma.png' }}
@@ -33,8 +33,8 @@ export default function HomePage() {
               />
             </View>
             <ThemedText style={styles.tileLabel}>ပါဠိ(မြန်မာပြန်)</ThemedText>
-          </View>
-          <View style={styles.tile}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.tile} onPress={() => router.push('/myanmar')}>
             <View style={styles.tileImageWrap}>
               <Image
                 source={{ uri: 'https://sys-shop.s3.ap-southeast-1.amazonaws.com/0main/DhammaZone/dhamma1.jpeg' }}
@@ -43,7 +43,7 @@ export default function HomePage() {
               />
             </View>
             <ThemedText style={styles.tileLabel}>မြန်မာဘာသာ</ThemedText>
-          </View>
+          </TouchableOpacity>
         </View>
       </ScrollView>
       <View style={styles.footer}>

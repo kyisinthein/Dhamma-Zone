@@ -33,6 +33,20 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="myanmar"
+        options={{
+          title: 'Myanmar',
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="pali"
+        options={{
+          title: 'Pali',
+          href: null,
+        }}
+      />
+      <Tabs.Screen
         name="explore"
         options={{
           title: 'Explore',

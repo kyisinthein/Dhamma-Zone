@@ -1,0 +1,63 @@
+create extension if not exists pgcrypto;
+
+do $$
+begin
+  if not exists (select 1 from pg_type where typname = 'language_enum') then
+    create type public.language_enum as enum ('Myanmar', 'Pali', 'Chinese', 'English');
+  end if;
+end $$;
+
+create table if not exists public.sutta (
+  id uuid primary key default gen_random_uuid(),
+  sutta_id text unique not null,
+  sutta_title text not null,
+  sutta_subtitle text,
+  text text,
+  text_link text,
+  image_link text,
+  language public.language_enum[] not null,
+  fb_link text,
+  utube_link text
+);
+
+drop index if exists sutta_language_idx;
+create index if not exists sutta_language_gin_idx on public.sutta using gin (language);
+
+alter table public.sutta enable row level security;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policy p
+    join pg_class c on c.oid = p.polrelid
+    join pg_namespace n on n.oid = c.relnamespace
+    where n.nspname = 'public' and c.relname = 'sutta' and p.polname = 'sutta_select_anon'
+  ) then
+    create policy sutta_select_anon on public.sutta for select to anon using (true);
+  end if;
+end $$;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policy p
+    join pg_class c on c.oid = p.polrelid
+    join pg_namespace n on n.oid = c.relnamespace
+    where n.nspname = 'public' and c.relname = 'sutta' and p.polname = 'sutta_select_authenticated'
+  ) then
+    create policy sutta_select_authenticated on public.sutta for select to authenticated using (true);
+  end if;
+end $$;
+
+-- If table already exists with single-value enum, convert to array
+do $$
+begin
+  if exists (
+    select 1 from information_schema.columns 
+    where table_schema = 'public' and table_name = 'sutta' and column_name = 'language' and data_type = 'USER-DEFINED'
+  ) then
+    alter table public.sutta alter column language type public.language_enum[] using array[language];
+  end if;
+end $$;
