@@ -23,11 +23,11 @@ export default function HomePage() {
           contentFit="cover"
         />
         <ThemedText type="title" style={styles.title}>သုတ္တန်ပိဋကတ်နှင့် အနက်အဓိပ္ပာယ်များ</ThemedText>
-        <View style={styles.tilesRow}>
+        <View style={[styles.tilesRow, { marginTop: -60 }]}>
           <TouchableOpacity style={styles.tile} onPress={() => router.push('/pali')}>
             <View style={styles.tileImageWrap}>
               <Image
-                source={{ uri: 'https://sys-shop.s3.ap-southeast-1.amazonaws.com/0main/DhammaZone/dhamma.png' }}
+                source={{ uri: 'https://sys-shop.s3.ap-southeast-1.amazonaws.com/0main/DhammaZone/dhaicon.jpg' }}
                 style={styles.tileImage}
                 contentFit="contain"
               />
@@ -37,7 +37,7 @@ export default function HomePage() {
           <TouchableOpacity style={styles.tile} onPress={() => router.push('/myanmar')}>
             <View style={styles.tileImageWrap}>
               <Image
-                source={{ uri: 'https://sys-shop.s3.ap-southeast-1.amazonaws.com/0main/DhammaZone/dhamma1.jpeg' }}
+                source={{ uri: 'https://sys-shop.s3.ap-southeast-1.amazonaws.com/0main/DhammaZone/dhaicon.jpg' }}
                 style={styles.tileImage}
                 contentFit="cover"
               />
@@ -45,13 +45,35 @@ export default function HomePage() {
             <ThemedText style={styles.tileLabel}>မြန်မာဘာသာ</ThemedText>
           </TouchableOpacity>
         </View>
+        <View style={[styles.tilesRow, { marginTop: 0 }]}>
+          <TouchableOpacity style={styles.tile} onPress={() => router.push('/english')}>
+            <View style={styles.tileImageWrap}>
+              <Image
+                source={{ uri: 'https://sys-shop.s3.ap-southeast-1.amazonaws.com/0main/DhammaZone/dhaicon.jpg' }}
+                style={styles.tileImage}
+                contentFit="contain"
+              />
+            </View>
+            <ThemedText style={styles.tileLabel}>အင်္ဂလိပ်ဘာသာ</ThemedText>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.tile} onPress={() => router.push('/chinese')}>
+            <View style={styles.tileImageWrap}>
+              <Image
+                source={{ uri: 'https://sys-shop.s3.ap-southeast-1.amazonaws.com/0main/DhammaZone/dhaicon.jpg' }}
+                style={styles.tileImage}
+                contentFit="cover"
+              />
+            </View>
+            <ThemedText style={styles.tileLabel}>တရုတ်ဘာသာ</ThemedText>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.footerBtn} onPress={() => router.replace('/home')}>
+        <TouchableOpacity style={styles.footerBtn} onPress={() => {}}>
           <Ionicons name="home" size={26} color="#fff" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.footerBtn} onPress={() => router.push('/guide')}>
-          <Ionicons name="book" size={26} color="#fff" />
+        <TouchableOpacity style={styles.footerBtn} onPress={() => router.push('/projects')}>
+          <Ionicons name="layers" size={26} color="#fff" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.footerBtn} onPress={() => router.push('/about')}>
           <Ionicons name="information-circle" size={26} color="#fff" />
@@ -70,7 +92,7 @@ const styles = StyleSheet.create({
     padding: 16,
     gap: 16,
     paddingBottom: 100,
-    marginTop: 50,
+    marginTop:30,
   },
   hero: {
     width: '100%',
@@ -84,7 +106,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     marginTop: 0,
     height: 100,
-    paddingTop: 20,
+    paddingTop: 10,
     color: '#55372B',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -101,7 +123,7 @@ const styles = StyleSheet.create({
     },
   tilesRow: {
     flexDirection: 'row',
-    gap: 16,
+    
   },
   tile: {
     alignItems: 'center',
@@ -111,20 +133,23 @@ const styles = StyleSheet.create({
   tileImageWrap: {
     width: 120,
     height: 120,
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
+    
   },
   tileImage: {
     width: 100,
     height: 100,
+    borderRadius: 20,
   },
   tileLabel: {
     fontSize: 16,
     color: '#55372B',
     fontWeight: 400,
-    paddingTop: 15
+    paddingTop: 10,
+    marginTop: -5
   },
   footer: {
     position: 'absolute',

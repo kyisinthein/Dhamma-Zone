@@ -15,9 +15,11 @@ type Sutta = {
   text: string | null;
   text_link: string | null;
   image_link: string | null;
+  fb_link: string | null;
+  utube_link: string | null;
 };
 
-export default function MyanmarPage() {
+export default function EnglishPage() {
   const [data, setData] = useState<Sutta[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -34,9 +36,8 @@ export default function MyanmarPage() {
 
   async function fetchCount() {
     const { count, error } = await supabase
-      .from('sutta')
-      .select('*', { count: 'exact', head: true })
-      .contains('language', ['Myanmar']);
+      .from('sutta_english')
+      .select('*', { count: 'exact', head: true });
     if (!error && count !== null) {
       setTotalCount(count);
     }
@@ -51,16 +52,15 @@ export default function MyanmarPage() {
     const from = (p - 1) * pageSize;
     const to = from + pageSize - 1;
     const { data, error } = await supabase
-      .from('sutta')
-      .select('id,sutta_id,sutta_title,sutta_subtitle,text,text_link,image_link,language')
-      .contains('language', ['Myanmar'])
+      .from('sutta_english')
+      .select('id,sutta_id,sutta_title,sutta_subtitle,text,text_link,image_link,fb_link,utube_link')
       .order('sutta_id', { ascending: true })
       .range(from, to);
     if (error) {
       setLoading(false);
       return;
     }
-    setData((data as Sutta[]) ?? []);
+    setData((data as unknown as Sutta[]) ?? []);
     setLoading(false);
   }
 
@@ -76,14 +76,13 @@ export default function MyanmarPage() {
     }
     setSearching(true);
     const { data, error } = await supabase
-      .from('sutta')
-      .select('id,sutta_id,sutta_title,sutta_subtitle,text,text_link,image_link,language')
-      .contains('language', ['Myanmar'])
+      .from('sutta_english')
+      .select('id,sutta_id,sutta_title,sutta_subtitle,text,text_link,image_link,fb_link,utube_link')
       .or(`sutta_title.ilike.%${q}%,sutta_subtitle.ilike.%${q}%,text.ilike.%${q}%`)
       .order('sutta_id', { ascending: true })
       .limit(20);
     if (!error) {
-      setSearchData((data as Sutta[]) ?? []);
+      setSearchData((data as unknown as Sutta[]) ?? []);
     }
     setSearching(false);
   }
@@ -99,7 +98,7 @@ export default function MyanmarPage() {
     <ThemedView style={styles.container}>
       <View style={styles.topBar}>
         <View style={styles.actionsRow}>
-          <ThemedText type="title" style={styles.headerTitle}>မြန်မာဘာသာ</ThemedText>
+          <ThemedText type="title" style={styles.headerTitle}>အင်္ဂလိပ်ဘာသာ</ThemedText>
           <View style={{ flex: 1 }} />
           {searchOpen ? (
             <View style={styles.searchWrap}>
@@ -197,35 +196,32 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#55372B', paddingTop: 70 },
   topBar: { paddingHorizontal: 16, gap: 10, marginTop: 0 },
   actionsRow: { flexDirection: 'row', alignItems: 'center' },
-  pageRow: { flexDirection: 'row', alignItems: 'center' },
-  pageArrow: { width: 32, height: 32, borderRadius: 12, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 2 },
-  backBtn: { width: 32, height: 32, borderRadius: 12, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 2 },
-  pageChips: { flexDirection: 'row', gap: 10, flex: 1, justifyContent: 'center' },
-  chip: { width: 40, height: 40, borderRadius: 12, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 2 },
-  chipActive: { backgroundColor: '#7e2f1fff' },
-  chipText: { color: '#7e2f1fff' },
-  chipTextActive: { color: '#fff' },
   headerTitle: { color: '#fff', fontSize: 24, fontWeight: 400, paddingTop: 40, paddingBottom: 20 },
   searchWrap: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   searchInput: { width: 160, height: 34, borderRadius: 17, backgroundColor: '#fff', paddingHorizontal: 12, color: '#55372B', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 2 },
   searchBtn: { width: 34, height: 34, borderRadius: 17, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 2, zIndex: 1 },
   loadingWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingBottom: 140 },
-  gridList: { paddingHorizontal: 16, paddingBottom: 220, gap: 16, marginTop: 16 },
+  gridList: { paddingHorizontal: 16, paddingBottom: 140, gap: 16, marginTop: 16 },
   gridRow: { gap: 16 },
   gridCard: { flex: 1, backgroundColor: '#ffffff', borderRadius: 22, padding: 10, alignItems: 'center' },
   gridThumbWrap: { width: 150, height: 150, backgroundColor: '#fff', borderRadius: 16, overflow: 'hidden' },
   gridThumb: { width: '100%', height: '100%' },
   gridTitle: { fontSize: 14, fontWeight: 400, color: '#7e2f1fff', marginTop: 10 },
-  gridReadBtn: { backgroundColor: '#c54e36', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 12, marginTop: 10 },
-  gridReadText: { color: '#fff', fontSize: 11 },
   paginationFixed: {
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 140,
-    paddingHorizontal: 16,
-    zIndex: 1,
+    alignItems: 'center',
+    zIndex: 10,
   },
+  pageRow: { flexDirection: 'row', alignItems: 'center' },
+  pageArrow: { width: 32, height: 32, borderRadius: 12, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 2 },
+  pageChips: { flexDirection: 'row', gap: 10, flex: 1, justifyContent: 'center', paddingHorizontal: 16 },
+  chip: { width: 40, height: 40, borderRadius: 12, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 2 },
+  chipActive: { backgroundColor: '#7e2f1fff' },
+  chipText: { color: '#7e2f1fff' },
+  chipTextActive: { color: '#fff' },
   footer: {
     position: 'absolute',
     left: 40,

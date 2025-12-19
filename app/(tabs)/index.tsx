@@ -12,8 +12,6 @@ import Animated, {
 
 import { ThemedView } from '@/components/themed-view';
 
-const AnimatedImage = Animated.createAnimatedComponent(Image);
-
 export default function HomeScreen() {
   const spin = useSharedValue(0);
   const progress = useSharedValue(0);
@@ -40,13 +38,15 @@ export default function HomeScreen() {
   return (
     <ThemedView style={styles.container}>
       <View style={styles.top}>
-        <AnimatedImage
-          source={{
-            uri: 'https://sys-shop.s3.ap-southeast-1.amazonaws.com/0main/DhammaZone/dhamma.png',
-          }}
-          style={[styles.dhamma, rotateStyle]}
-          contentFit="contain"
-        />
+        <Animated.View style={[styles.dhamma, rotateStyle]}>
+          <Image
+            source={{
+              uri: 'https://sys-shop.s3.ap-southeast-1.amazonaws.com/0main/DhammaZone/dhamma.png',
+            }}
+            style={{ width: '100%', height: '100%' }}
+            contentFit="contain"
+          />
+        </Animated.View>
       </View>
       <View style={styles.bottom}>
         <Image
